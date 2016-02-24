@@ -13,3 +13,7 @@ import org.springframework.stereotype.Repository
 @Repository
 interface LectureRepository : PagingAndSortingRepository<Lecture, Long> {
 }
+
+@Repository
+interface EquivalentRepository : PagingAndSortingRepository<Equivalent, Long> {
+}

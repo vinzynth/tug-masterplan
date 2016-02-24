@@ -1,6 +1,7 @@
 package at.chrl.tug.masterplan.ui
 
 import at.chrl.tug.masterplan.data.Catalogue
+import at.chrl.tug.masterplan.data.LectureRepository
 import com.vaadin.annotations.Theme
 import com.vaadin.annotations.Title
 import com.vaadin.server.Responsive
@@ -9,6 +10,7 @@ import com.vaadin.server.VaadinRequest
 import com.vaadin.spring.annotation.SpringUI
 import com.vaadin.ui.*
 import com.vaadin.ui.themes.ValoTheme
+import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 /**
@@ -22,6 +24,10 @@ import java.util.*
 @Theme("valo")
 @Title("ICE Curriculum Builder")
 class MasterplanUI() : com.vaadin.ui.UI() {
+
+
+    @Autowired
+    lateinit var repo: LectureRepository;
 
     override fun init(request: VaadinRequest?) {
         locale = Locale.GERMAN;
@@ -41,6 +47,8 @@ class MasterplanUI() : com.vaadin.ui.UI() {
 
         val left = VerticalLayout();
         val right = VerticalLayout();
+        left.isSpacing = true;
+        right.isSpacing = true;
         left.setHeight(100f, Sizeable.Unit.PERCENTAGE);
         right.setHeight(100f, Sizeable.Unit.PERCENTAGE);
         left.setWidthUndefined();
@@ -49,11 +57,13 @@ class MasterplanUI() : com.vaadin.ui.UI() {
         val c = CheckComponent();
         c.setSizeFull();
         left.addComponent(c);
-        right.addComponent(Label("blub"))
+        val lc = LectureComponent(repo);
+        lc.setSizeFull();
+        right.addComponent(lc);
 
         main.addComponents(left, right);
-        main.setExpandRatio(left, 0.25f);
-        main.setExpandRatio(right, 0.75f);
+        main.setExpandRatio(right, 1f);
+        main.isSpacing = true
 
         return main;
     }
@@ -67,8 +77,7 @@ class CheckComponent : VerticalLayout() {
         val l = Label("Wahlfachkataloge:");
         this.addComponent(l);
 
-        l.setHeight(10f, Sizeable.Unit.PERCENTAGE);
-
+        l.setSizeUndefined();
 
         val g = Grid();
 
@@ -109,6 +118,7 @@ class CheckComponent : VerticalLayout() {
             };
 
         this.addComponent(g);
+        this.setExpandRatio(g, 1f);
     }
 
 }
@@ -117,5 +127,25 @@ class StatusComponent : HorizontalLayout(){
 
     init {
         this.addComponent(Label("Status"));
+    }
+}
+
+class LectureComponent(val repo: LectureRepository) : VerticalLayout(){
+
+    init {
+        val g = Grid();
+
+        g.setSizeFull();
+
+        g.addColumn("Nr", String::class.java);
+        g.addColumn("Titel", String::class.java);
+
+
+        repo.findAll().forEach { l ->
+            g.addRow(l.lectureNumber.toString(), l.title);
+        }
+
+        this.addComponent(g);
+        this.setExpandRatio(g, 1f);
     }
 }

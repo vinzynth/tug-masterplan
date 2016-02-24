@@ -21,9 +21,19 @@ data class Lecture(
         val ects: Double = 0.0,
         @Enumerated(javax.persistence.EnumType.STRING)
         val type: LectureType = LectureType.VO,
-        @ElementCollection
         @Enumerated(javax.persistence.EnumType.STRING)
-        val compulsoryTypes: List<CompulsoryType> = ArrayList()
+        val compulsoryTypes: CompulsoryType = CompulsoryType.FREE
+){}
+
+@Entity
+data class Equivalent(
+        @Id
+        @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
+        val id: Long = 0,
+        @OneToOne
+        val l1: Lecture? = null,
+        @OneToOne
+        val l2: Lecture? = null
 ){}
 
 enum class LectureType{
