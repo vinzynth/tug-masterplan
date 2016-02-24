@@ -1,5 +1,6 @@
 package at.chrl.tug.masterplan.data
 
+import java.util.*
 import javax.persistence.*
 
 /**
@@ -13,16 +14,16 @@ import javax.persistence.*
 data class Lecture(
         @Id
         @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-        val id: Long,
-        val lectureNumber: Int,
-        val title: String,
-        val hours: Double,
-        val ects: Double,
+        val id: Long = 0,
+        val lectureNumber: Int = 0,
+        val title: String = "",
+        val hours: Double = 0.0,
+        val ects: Double = 0.0,
         @Enumerated(javax.persistence.EnumType.STRING)
-        val type: LectureType,
+        val type: LectureType = LectureType.VO,
         @ElementCollection
         @Enumerated(javax.persistence.EnumType.STRING)
-        val compulsoryTypes: List<CompulsoryType>
+        val compulsoryTypes: List<CompulsoryType> = ArrayList()
 ){}
 
 enum class LectureType{
@@ -34,14 +35,14 @@ enum class CompulsoryType{
 }
 
 enum class Catalogue(val title: String){
-    c01("Secure and Correct Systems"),
-    c02("Computer Vision and Graphics"),
-    c03("Robotics and Computational Intelligence"),
-    c04("Signal Processing and Human Communication"),
-    c05("Communications and Mobile Computing"),
-    c06("Embedded and Automotive Systems"),
-    c07("Measurement and Control Systems"),
-    c08("Microelectronics and IC Design"),
-    s01("Supplementary catalogue"),
-    b01("Business, Law, and Management")
+    C01("Secure and Correct Systems"),
+    C02("Computer Vision and Graphics"),
+    C03("Robotics and Computational Intelligence"),
+    C04("Signal Processing and Human Communication"),
+    C05("Communications and Mobile Computing"),
+    C06("Embedded and Automotive Systems"),
+    C07("Measurement and Control Systems"),
+    C08("Microelectronics and IC Design"),
+    S01("Supplementary Catalogue"),
+    B01("Business, Law, and Management")
 }
