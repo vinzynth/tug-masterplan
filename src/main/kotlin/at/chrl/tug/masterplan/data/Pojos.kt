@@ -1,8 +1,6 @@
 package at.chrl.tug.masterplan.data
 
-import javax.persistence.Entity
-import javax.persistence.GeneratedValue
-import javax.persistence.Id
+import javax.persistence.*
 
 /**
  * Created by ChRL on 24.02.16.
@@ -20,7 +18,10 @@ data class Lecture(
         val title: String,
         val hours: Double,
         val ects: Double,
+        @Enumerated(javax.persistence.EnumType.STRING)
         val type: LectureType,
+        @ElementCollection
+        @Enumerated(javax.persistence.EnumType.STRING)
         val compulsoryTypes: List<CompulsoryType>
 ){}
 
