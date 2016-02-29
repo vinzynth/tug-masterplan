@@ -1,6 +1,5 @@
 package at.chrl.tug.masterplan.data
 
-import java.util.*
 import javax.persistence.*
 
 /**
